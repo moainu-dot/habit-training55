@@ -28,9 +28,10 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 .day{aspect-ratio:1;border-radius:11px;background:#1b1f25;font-size:12px;color:var(--muted);position:relative;overflow:hidden;isolation:isolate}
 .day::before,.day::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.95}.day.has-walk::before{background:linear-gradient(135deg,#86efac,#4ade80);clip-path:polygon(0 0,0 100%,100% 100%)}.day.has-strength::after{background:linear-gradient(135deg,#7dd3fc,#60a5fa);clip-path:polygon(0 0,100% 0,100% 100%)}
 .day-number{position:absolute;top:6px;left:7px;z-index:1}.day.has-walk .day-number,.day.has-strength .day-number{color:#071016;font-weight:800;text-shadow:0 1px 1px rgba(255,255,255,.25)}
-.empty{opacity:.2}.today{outline:2px solid #f8fafc;outline-offset:2px}
+.day:not(.empty):not(.future){cursor:pointer;transition:transform .12s}.day:not(.empty):not(.future):active{transform:scale(.94)}.empty{opacity:.2}.future{opacity:.45}.today{outline:2px solid #f8fafc;outline-offset:2px}
 @media(max-width:480px){.calendar-card{padding:14px 9px}.dow,.cal{gap:4px}.day{border-radius:9px}.day-number{top:5px;left:6px}}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}label{font-size:11px;color:var(--muted)}input{width:100%;margin-top:5px;padding:11px;background:#0e1115;border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px}
+.day-modal[hidden]{display:none}.day-modal{position:fixed;inset:0;z-index:20;display:grid;place-items:end center}.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}.modal-sheet{position:relative;width:min(100%,520px);background:#171b20;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.45)}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modal-head h2{font-size:20px;margin:0}.close-btn{width:38px;height:38px;border:0;border-radius:50%;background:#282e36;color:var(--text);font-size:22px}.edit-label{color:var(--muted);font-size:12px;margin:15px 0 7px}.strength-toggle{width:100%;padding:15px;border:1px solid #3a424d;border-radius:15px;background:#222831;color:var(--text);font-size:16px;font-weight:800}.strength-toggle.on{background:linear-gradient(135deg,#7dd3fc,#60a5fa);color:#071016;border-color:transparent}.minute-row{display:grid;grid-template-columns:52px 1fr 52px;gap:9px}.minute-row button{border:0;border-radius:14px;background:#29313a;color:var(--text);font-size:25px}.minute-row input{text-align:center;margin:0;font-size:20px;font-weight:800}.save-day{width:100%;margin-top:20px;padding:15px;border:0;border-radius:15px;background:#f8fafc;color:#0b0d10;font-size:16px;font-weight:900}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(12px);background:#fff;color:#111;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.18s;pointer-events:none}.toast.on{opacity:1;transform:translateX(-50%)}
 .note{color:var(--muted);font-size:11px;text-align:center;margin-top:15px}
 </style>
@@ -70,6 +71,17 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 </div>
 <div class="note">HTTPSで開くと、iPhone/iPadのSafariから「ホーム画面に追加」できます。</div>
 </div>
+<div id="dayModal" class="day-modal" hidden>
+<div id="modalBackdrop" class="modal-backdrop"></div>
+<div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="editDate">
+<div class="modal-head"><h2 id="editDate">実績を編集</h2><button id="closeModal" class="close-btn" aria-label="閉じる">×</button></div>
+<div class="edit-label">筋トレ</div>
+<button id="editStrength" class="strength-toggle" aria-pressed="false">未実施</button>
+<div class="edit-label">ウォーキング（分）</div>
+<div class="minute-row"><button id="walkMinus" aria-label="時間を減らす">−</button><input id="editWalk" type="number" min="0" step="5" inputmode="numeric"><button id="walkPlus" aria-label="時間を増やす">＋</button></div>
+<button id="saveDay" class="save-day">この日の実績を保存</button>
+</div>
+</div>
 <div id="toast" class="toast"></div>
 <script>
 const KEY='habit_training_data_v2', SKEY='habit_training_settings_v2';
@@ -82,6 +94,7 @@ function storeGet(key,fallback){try{const v=localStorage.getItem(key);return v?J
 function storeSet(key,val){try{localStorage.setItem(key,JSON.stringify(val));return true}catch(e){return false}}
 let data=storeGet(KEY,{});
 let settings=Object.assign({strengthGoal:12,walkStep:30,walkGoal:600,memo:''},storeGet(SKEY,{}));
+let editingKey=null;
 
 function say(t){const x=$('toast');x.textContent=t;x.classList.add('on');clearTimeout(say.t);say.t=setTimeout(()=>x.classList.remove('on'),1300)}
 function ensure(k){if(!data[k])data[k]={strength:0,walk:0}}
@@ -98,6 +111,16 @@ $('walkBtn').onclick=()=>{
 };
 $('prev').onclick=()=>{viewing=new Date(viewing.getFullYear(),viewing.getMonth()-1,1);render()};
 $('next').onclick=()=>{viewing=new Date(viewing.getFullYear(),viewing.getMonth()+1,1);render()};
+
+function setEditStrength(on){const b=$('editStrength');b.dataset.on=on?'1':'0';b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));b.textContent=on?'実施済み 💪':'未実施'}
+function openDay(k){editingKey=k;const [y,m,d]=k.split('-').map(Number),r=data[k]||{};$('editDate').textContent=`${y}年${m}月${d}日の実績`;setEditStrength((r.strength||0)>0);$('editWalk').value=Number(r.walk)||0;$('dayModal').hidden=false}
+function closeDay(){editingKey=null;$('dayModal').hidden=true}
+$('editStrength').onclick=()=>setEditStrength($('editStrength').dataset.on!=='1');
+$('walkMinus').onclick=()=>{$('editWalk').value=Math.max(0,(Number($('editWalk').value)||0)-Number(settings.walkStep||30))};
+$('walkPlus').onclick=()=>{$('editWalk').value=(Number($('editWalk').value)||0)+Number(settings.walkStep||30)};
+$('closeModal').onclick=$('modalBackdrop').onclick=closeDay;
+$('saveDay').onclick=()=>{if(!editingKey)return;const rec={strength:$('editStrength').dataset.on==='1'?1:0,walk:Math.max(0,Number($('editWalk').value)||0)};if(!rec.strength&&!rec.walk)delete data[editingKey];else data[editingKey]=rec;save();const saved=editingKey;closeDay();render();say(`${saved.slice(5).replace('-','/')}の実績を保存`)};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('dayModal').hidden)closeDay()});
 
 function settingsChanged(){
  settings={strengthGoal:Number($('strengthGoal').value)||12,walkStep:Number($('walkStep').value)||30,walkGoal:Number($('walkGoal').value)||600,memo:$('memo').value||''};
@@ -124,9 +147,10 @@ function render(){
  const c=$('calendar');c.innerHTML='';const y=viewing.getFullYear(),m=viewing.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);
  for(let i=0;i<first.getDay();i++){const e=document.createElement('div');e.className='day empty';c.appendChild(e)}
  const tk=dkey(new Date());
- for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{};const strength=(r.strength||0)>0,walk=(r.walk||0)>0;const e=document.createElement('div');
-   e.className='day'+(strength?' has-strength':'')+(walk?' has-walk':'')+(k===tk?' today':'');
-   e.innerHTML=`<span class="day-number">${d}</span>`;c.appendChild(e)}
+ const now=new Date(),todayOnly=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+ for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{};const strength=(r.strength||0)>0,walk=(r.walk||0)>0,future=dt>todayOnly;const e=document.createElement('div');
+   e.className='day'+(strength?' has-strength':'')+(walk?' has-walk':'')+(future?' future':'')+(k===tk?' today':'');
+   e.innerHTML=`<span class="day-number">${d}</span>`;if(!future){e.setAttribute('role','button');e.setAttribute('aria-label',`${d}日の実績を編集`);e.onclick=()=>openDay(k)}c.appendChild(e)}
 }
 render();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
