@@ -25,13 +25,13 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 .monthrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.monthrow button{background:#222831;border:1px solid var(--line);color:var(--text);border-radius:12px;width:40px;height:40px;font-size:22px}.month{font-weight:700}
 .dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dow{font-size:10px;color:var(--muted);text-align:center;margin:9px 0 6px}
 .legend{display:flex;justify-content:center;gap:18px;margin:0 0 10px;color:var(--muted);font-size:11px}.legend span{display:flex;align-items:center;gap:6px}.legend i{width:12px;height:12px;border-radius:3px}.legend .ls{background:var(--blue)}.legend .lw{background:var(--green)}
-.day{aspect-ratio:1;border-radius:11px;background:#1b1f25;font-size:12px;color:var(--muted);position:relative;overflow:hidden;isolation:isolate}
+.day{aspect-ratio:1;border:0;padding:0;border-radius:11px;background:#1b1f25;font:inherit;font-size:12px;color:var(--muted);position:relative;overflow:hidden;isolation:isolate;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .day::before,.day::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.95}.day.has-walk::before{background:linear-gradient(135deg,#86efac,#4ade80);clip-path:polygon(0 0,0 100%,100% 100%)}.day.has-strength::after{background:linear-gradient(135deg,#7dd3fc,#60a5fa);clip-path:polygon(0 0,100% 0,100% 100%)}
 .day-number{position:absolute;top:6px;left:7px;z-index:1}.day.has-walk .day-number,.day.has-strength .day-number{color:#071016;font-weight:800;text-shadow:0 1px 1px rgba(255,255,255,.25)}
 .day:not(.empty):not(.future){cursor:pointer;transition:transform .12s}.day:not(.empty):not(.future):active{transform:scale(.94)}.empty{opacity:.2}.future{opacity:.45}.today{outline:2px solid #f8fafc;outline-offset:2px}
 @media(max-width:480px){.calendar-card{padding:14px 9px}.dow,.cal{gap:4px}.day{border-radius:9px}.day-number{top:5px;left:6px}}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}label{font-size:11px;color:var(--muted)}input{width:100%;margin-top:5px;padding:11px;background:#0e1115;border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px}
-.day-modal[hidden]{display:none}.day-modal{position:fixed;inset:0;z-index:20;display:grid;place-items:end center}.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}.modal-sheet{position:relative;width:min(100%,520px);background:#171b20;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.45)}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modal-head h2{font-size:20px;margin:0}.close-btn{width:38px;height:38px;border:0;border-radius:50%;background:#282e36;color:var(--text);font-size:22px}.edit-label{color:var(--muted);font-size:12px;margin:15px 0 7px}.strength-toggle{width:100%;padding:15px;border:1px solid #3a424d;border-radius:15px;background:#222831;color:var(--text);font-size:16px;font-weight:800}.strength-toggle.on{background:linear-gradient(135deg,#7dd3fc,#60a5fa);color:#071016;border-color:transparent}.minute-row{display:grid;grid-template-columns:52px 1fr 52px;gap:9px}.minute-row button{border:0;border-radius:14px;background:#29313a;color:var(--text);font-size:25px}.minute-row input{text-align:center;margin:0;font-size:20px;font-weight:800}.save-day{width:100%;margin-top:20px;padding:15px;border:0;border-radius:15px;background:#f8fafc;color:#0b0d10;font-size:16px;font-weight:900}
+.day-modal[hidden]{display:none}.day-modal{position:fixed;inset:0;z-index:20;display:grid;place-items:end center}.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)}.modal-sheet{position:relative;width:min(100%,520px);background:#171b20;border:1px solid var(--line);border-radius:24px 24px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.45)}.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.modal-head h2{font-size:20px;margin:0}.close-btn{width:38px;height:38px;border:0;border-radius:50%;background:#282e36;color:var(--text);font-size:22px}.edit-label{color:var(--muted);font-size:12px;margin:15px 0 7px}.activity-toggle{width:100%;padding:15px;border:1px solid #3a424d;border-radius:15px;background:#222831;color:var(--text);font-size:16px;font-weight:800}.activity-toggle.strength.on{background:linear-gradient(135deg,#7dd3fc,#60a5fa);color:#071016;border-color:transparent}.activity-toggle.walk.on{background:linear-gradient(135deg,#86efac,#4ade80);color:#07160d;border-color:transparent}.save-day{width:100%;margin-top:20px;padding:15px;border:0;border-radius:15px;background:#f8fafc;color:#0b0d10;font-size:16px;font-weight:900}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(12px);background:#fff;color:#111;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.18s;pointer-events:none}.toast.on{opacity:1;transform:translateX(-50%)}
 .note{color:var(--muted);font-size:11px;text-align:center;margin-top:15px}
 </style>
@@ -43,12 +43,12 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 
 <div class="quick">
 <button id="strengthBtn">💪 筋トレ<small>今日の実施をON/OFF</small></button>
-<button id="walkBtn">🚶 ウォーキング<small><span id="walkStepText">30</span>分追加</small></button>
+<button id="walkBtn">🚶 ウォーキング<small>今日の実施をON/OFF</small></button>
 </div>
 
 <div class="grid">
 <div class="card"><div class="label">筋トレ</div><div class="value"><span id="strengthDays">0</span><span class="unit"> 日</span></div><div class="label">目標 <span id="strengthGoalText">12</span>日</div><div class="bar"><div id="strengthFill" class="fill" style="width:0"></div></div></div>
-<div class="card"><div class="label">ウォーキング</div><div class="value"><span id="walkTotal">0</span><span class="unit"> 分</span></div><div class="label">目標 <span id="walkGoalText">600</span>分</div><div class="bar"><div id="walkFill" class="fill g" style="width:0"></div></div></div>
+<div class="card"><div class="label">ウォーキング</div><div class="value"><span id="walkDays">0</span><span class="unit"> 日</span></div><div class="label">目標 <span id="walkGoalText">20</span>日</div><div class="bar"><div id="walkFill" class="fill g" style="width:0"></div></div></div>
 <div class="card"><div class="label">運動した日</div><div class="value"><span id="activeDays">0</span><span class="unit"> 日</span></div></div>
 <div class="card"><div class="label">連続記録</div><div class="value"><span id="streak">0</span><span class="unit"> 日</span></div></div>
 
@@ -63,8 +63,7 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 <div style="font-weight:800">設定</div>
 <div class="settings">
 <label>筋トレ月目標<input id="strengthGoal" type="number" min="1" max="31" value="12"></label>
-<label>歩行1タップ（分）<input id="walkStep" type="number" min="5" step="5" value="30"></label>
-<label>歩行月目標（分）<input id="walkGoal" type="number" min="30" step="30" value="600"></label>
+<label>ウォーキング月目標<input id="walkGoal" type="number" min="1" max="31" value="20"></label>
 <label>メモ<input id="memo" type="text" placeholder="週3＋毎日歩く"></label>
 </div>
 </div>
@@ -76,9 +75,9 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 <div class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="editDate">
 <div class="modal-head"><h2 id="editDate">実績を編集</h2><button id="closeModal" class="close-btn" aria-label="閉じる">×</button></div>
 <div class="edit-label">筋トレ</div>
-<button id="editStrength" class="strength-toggle" aria-pressed="false">未実施</button>
-<div class="edit-label">ウォーキング（分）</div>
-<div class="minute-row"><button id="walkMinus" aria-label="時間を減らす">−</button><input id="editWalk" type="number" min="0" step="5" inputmode="numeric"><button id="walkPlus" aria-label="時間を増やす">＋</button></div>
+<button id="editStrength" class="activity-toggle strength" aria-pressed="false">未実施</button>
+<div class="edit-label">ウォーキング</div>
+<button id="editWalk" class="activity-toggle walk" aria-pressed="false">未実施</button>
 <button id="saveDay" class="save-day">この日の実績を保存</button>
 </div>
 </div>
@@ -93,67 +92,52 @@ let viewing=new Date(); viewing=new Date(viewing.getFullYear(),viewing.getMonth(
 function storeGet(key,fallback){try{const v=localStorage.getItem(key);return v?JSON.parse(v):fallback}catch(e){return fallback}}
 function storeSet(key,val){try{localStorage.setItem(key,JSON.stringify(val));return true}catch(e){return false}}
 let data=storeGet(KEY,{});
-let settings=Object.assign({strengthGoal:12,walkStep:30,walkGoal:600,memo:''},storeGet(SKEY,{}));
+const oldSettings=storeGet(SKEY,{});
+let settings={strengthGoal:Number(oldSettings.strengthGoal)||12,walkGoal:Number(oldSettings.walkDaysGoal)||(Number(oldSettings.walkGoal)<=31?Number(oldSettings.walkGoal):20),memo:oldSettings.memo||''};
 let editingKey=null;
 
 function say(t){const x=$('toast');x.textContent=t;x.classList.add('on');clearTimeout(say.t);say.t=setTimeout(()=>x.classList.remove('on'),1300)}
 function ensure(k){if(!data[k])data[k]={strength:0,walk:0}}
 function save(){if(!storeSet(KEY,data))say('保存できませんでした')}
 function today(){return new Date()}
-
-$('strengthBtn').onclick=()=>{
- const k=dkey(today()); ensure(k); data[k].strength=data[k].strength?0:1; save();
- viewing=new Date(today().getFullYear(),today().getMonth(),1); render(); say(data[k].strength?'筋トレを記録 💪':'筋トレ記録を解除');
-};
-$('walkBtn').onclick=()=>{
- const k=dkey(today()); ensure(k); data[k].walk=(Number(data[k].walk)||0)+Number(settings.walkStep||30); save();
- viewing=new Date(today().getFullYear(),today().getMonth(),1); render(); say(`ウォーキング +${settings.walkStep}分`);
-};
+function toggleToday(kind,label,emoji){
+ const now=today(),k=dkey(now);ensure(k);data[k][kind]=(Number(data[k][kind])||0)>0?0:1;
+ if(!data[k].strength&&!data[k].walk)delete data[k];save();viewing=new Date(now.getFullYear(),now.getMonth(),1);render();say(data[k]?.[kind]?`${label}を記録 ${emoji}`:`${label}記録を解除`);
+}
+$('strengthBtn').onclick=()=>toggleToday('strength','筋トレ','💪');
+$('walkBtn').onclick=()=>toggleToday('walk','ウォーキング','🚶');
 $('prev').onclick=()=>{viewing=new Date(viewing.getFullYear(),viewing.getMonth()-1,1);render()};
 $('next').onclick=()=>{viewing=new Date(viewing.getFullYear(),viewing.getMonth()+1,1);render()};
 
-function setEditStrength(on){const b=$('editStrength');b.dataset.on=on?'1':'0';b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));b.textContent=on?'実施済み 💪':'未実施'}
-function openDay(k){editingKey=k;const [y,m,d]=k.split('-').map(Number),r=data[k]||{};$('editDate').textContent=`${y}年${m}月${d}日の実績`;setEditStrength((r.strength||0)>0);$('editWalk').value=Number(r.walk)||0;$('dayModal').hidden=false}
+function setToggle(id,on,emoji){const b=$(id);b.dataset.on=on?'1':'0';b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));b.textContent=on?`実施済み ${emoji}`:'未実施'}
+function openDay(k){editingKey=k;const [y,m,d]=k.split('-').map(Number),r=data[k]||{};$('editDate').textContent=`${y}年${m}月${d}日の実績`;setToggle('editStrength',(Number(r.strength)||0)>0,'💪');setToggle('editWalk',(Number(r.walk)||0)>0,'🚶');$('dayModal').hidden=false}
 function closeDay(){editingKey=null;$('dayModal').hidden=true}
-$('editStrength').onclick=()=>setEditStrength($('editStrength').dataset.on!=='1');
-$('walkMinus').onclick=()=>{$('editWalk').value=Math.max(0,(Number($('editWalk').value)||0)-Number(settings.walkStep||30))};
-$('walkPlus').onclick=()=>{$('editWalk').value=(Number($('editWalk').value)||0)+Number(settings.walkStep||30)};
+$('editStrength').onclick=()=>setToggle('editStrength',$('editStrength').dataset.on!=='1','💪');
+$('editWalk').onclick=()=>setToggle('editWalk',$('editWalk').dataset.on!=='1','🚶');
 $('closeModal').onclick=$('modalBackdrop').onclick=closeDay;
-$('saveDay').onclick=()=>{if(!editingKey)return;const rec={strength:$('editStrength').dataset.on==='1'?1:0,walk:Math.max(0,Number($('editWalk').value)||0)};if(!rec.strength&&!rec.walk)delete data[editingKey];else data[editingKey]=rec;save();const saved=editingKey;closeDay();render();say(`${saved.slice(5).replace('-','/')}の実績を保存`)};
+$('saveDay').onclick=()=>{if(!editingKey)return;const rec={strength:$('editStrength').dataset.on==='1'?1:0,walk:$('editWalk').dataset.on==='1'?1:0};if(!rec.strength&&!rec.walk)delete data[editingKey];else data[editingKey]=rec;save();const saved=editingKey;closeDay();render();say(`${saved.slice(5).replace('-','/')}の実績を保存`)};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('dayModal').hidden)closeDay()});
 
-function settingsChanged(){
- settings={strengthGoal:Number($('strengthGoal').value)||12,walkStep:Number($('walkStep').value)||30,walkGoal:Number($('walkGoal').value)||600,memo:$('memo').value||''};
- storeSet(SKEY,settings); render();
-}
-['strengthGoal','walkStep','walkGoal','memo'].forEach(id=>$(id).addEventListener('change',settingsChanged));
+function settingsChanged(){settings={strengthGoal:Number($('strengthGoal').value)||12,walkGoal:Number($('walkGoal').value)||20,memo:$('memo').value||''};storeSet(SKEY,{strengthGoal:settings.strengthGoal,walkDaysGoal:settings.walkGoal,memo:settings.memo});render()}
+['strengthGoal','walkGoal','memo'].forEach(id=>$(id).addEventListener('change',settingsChanged));
 
-function streak(){
- let d=new Date(),n=0,started=false;
- for(let i=0;i<366;i++){const r=data[dkey(d)];const active=r&&((r.strength||0)>0||(r.walk||0)>0);
-   if(active){n++;started=true}else if(started)break;
-   d.setDate(d.getDate()-1);
- }
- return n;
-}
+function streak(){let d=new Date(),n=0,started=false;for(let i=0;i<366;i++){const r=data[dkey(d)],active=r&&((Number(r.strength)||0)>0||(Number(r.walk)||0)>0);if(active){n++;started=true}else if(started)break;d.setDate(d.getDate()-1)}return n}
 function render(){
- $('strengthGoal').value=settings.strengthGoal;$('walkStep').value=settings.walkStep;$('walkGoal').value=settings.walkGoal;$('memo').value=settings.memo;
- $('walkStepText').textContent=settings.walkStep;$('strengthGoalText').textContent=settings.strengthGoal;$('walkGoalText').textContent=settings.walkGoal;
- const pref=mkey(viewing), rec=Object.entries(data).filter(([k])=>k.startsWith(pref));
- const sd=rec.filter(([,r])=>(r.strength||0)>0).length, wt=rec.reduce((a,[,r])=>a+(Number(r.walk)||0),0), ad=rec.filter(([,r])=>(r.strength||0)>0||(r.walk||0)>0).length;
- $('strengthDays').textContent=sd;$('walkTotal').textContent=wt;$('activeDays').textContent=ad;$('streak').textContent=streak();
- $('strengthFill').style.width=Math.min(100,sd/settings.strengthGoal*100)+'%';$('walkFill').style.width=Math.min(100,wt/settings.walkGoal*100)+'%';
+ $('strengthGoal').value=settings.strengthGoal;$('walkGoal').value=settings.walkGoal;$('memo').value=settings.memo;$('strengthGoalText').textContent=settings.strengthGoal;$('walkGoalText').textContent=settings.walkGoal;
+ const pref=mkey(viewing),rec=Object.entries(data).filter(([k])=>k.startsWith(pref));
+ const sd=rec.filter(([,r])=>(Number(r.strength)||0)>0).length,wd=rec.filter(([,r])=>(Number(r.walk)||0)>0).length,ad=rec.filter(([,r])=>(Number(r.strength)||0)>0||(Number(r.walk)||0)>0).length;
+ $('strengthDays').textContent=sd;$('walkDays').textContent=wd;$('activeDays').textContent=ad;$('streak').textContent=streak();$('strengthFill').style.width=Math.min(100,sd/settings.strengthGoal*100)+'%';$('walkFill').style.width=Math.min(100,wd/settings.walkGoal*100)+'%';
  $('monthLabel').textContent=`${viewing.getFullYear()}年 ${viewing.getMonth()+1}月`;
  const c=$('calendar');c.innerHTML='';const y=viewing.getFullYear(),m=viewing.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);
  for(let i=0;i<first.getDay();i++){const e=document.createElement('div');e.className='day empty';c.appendChild(e)}
- const tk=dkey(new Date());
- const now=new Date(),todayOnly=new Date(now.getFullYear(),now.getMonth(),now.getDate());
- for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{};const strength=(r.strength||0)>0,walk=(r.walk||0)>0,future=dt>todayOnly;const e=document.createElement('div');
-   e.className='day'+(strength?' has-strength':'')+(walk?' has-walk':'')+(future?' future':'')+(k===tk?' today':'');
-   e.innerHTML=`<span class="day-number">${d}</span>`;if(!future){e.setAttribute('role','button');e.setAttribute('aria-label',`${d}日の実績を編集`);e.onclick=()=>openDay(k)}c.appendChild(e)}
+ const now=new Date(),todayOnly=new Date(now.getFullYear(),now.getMonth(),now.getDate()),tk=dkey(now);
+ for(let d=1;d<=last.getDate();d++){
+   const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{},strength=(Number(r.strength)||0)>0,walk=(Number(r.walk)||0)>0,future=dt>todayOnly;
+   const e=document.createElement('button');e.type='button';e.className='day'+(strength?' has-strength':'')+(walk?' has-walk':'')+(future?' future':'')+(k===tk?' today':'');e.innerHTML=`<span class="day-number">${d}</span>`;e.setAttribute('aria-label',future?`${d}日（未来の日付）`:`${d}日の実績を編集`);e.disabled=future;if(!future)e.addEventListener('click',()=>openDay(k));c.appendChild(e);
+ }
 }
 render();
-if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js?v=5').catch(()=>{});
 </script>
 </body>
 </html>
