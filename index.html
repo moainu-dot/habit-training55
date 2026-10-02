@@ -23,7 +23,13 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 .wide{grid-column:1/-1}.label{color:var(--muted);font-size:12px}.value{font-size:30px;font-weight:800;margin-top:4px}
 .unit{font-size:13px;color:var(--muted)}.bar{height:8px;background:#252a31;border-radius:20px;margin-top:10px;overflow:hidden}.fill{height:100%;background:var(--blue)}.fill.g{background:var(--green)}
 .monthrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.monthrow button{background:#222831;border:1px solid var(--line);color:var(--text);border-radius:12px;width:40px;height:40px;font-size:22px}.month{font-weight:700}
-.dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dow{font-size:10px;color:var(--muted);text-align:center;margin:9px 0 5px}.day{height:48px;border-radius:10px;background:#1b1f25;padding:5px;font-size:11px;color:var(--muted);position:relative}.empty{opacity:.2}.today{outline:1px solid #64748b}.dots{position:absolute;bottom:6px;left:6px;display:flex;gap:4px}.dot{width:7px;height:7px;border-radius:50%}.s{background:var(--blue)}.w{background:var(--green)}
+.dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.dow{font-size:10px;color:var(--muted);text-align:center;margin:9px 0 6px}
+.legend{display:flex;justify-content:center;gap:18px;margin:0 0 10px;color:var(--muted);font-size:11px}.legend span{display:flex;align-items:center;gap:6px}.legend i{width:12px;height:12px;border-radius:3px}.legend .ls{background:var(--blue)}.legend .lw{background:var(--green)}
+.day{aspect-ratio:1;border-radius:11px;background:#1b1f25;font-size:12px;color:var(--muted);position:relative;overflow:hidden;isolation:isolate}
+.day::before,.day::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.95}.day.has-walk::before{background:linear-gradient(135deg,#86efac,#4ade80);clip-path:polygon(0 0,0 100%,100% 100%)}.day.has-strength::after{background:linear-gradient(135deg,#7dd3fc,#60a5fa);clip-path:polygon(0 0,100% 0,100% 100%)}
+.day-number{position:absolute;top:6px;left:7px;z-index:1}.day.has-walk .day-number,.day.has-strength .day-number{color:#071016;font-weight:800;text-shadow:0 1px 1px rgba(255,255,255,.25)}
+.empty{opacity:.2}.today{outline:2px solid #f8fafc;outline-offset:2px}
+@media(max-width:480px){.calendar-card{padding:14px 9px}.dow,.cal{gap:4px}.day{border-radius:9px}.day-number{top:5px;left:6px}}
 .settings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}label{font-size:11px;color:var(--muted)}input{width:100%;margin-top:5px;padding:11px;background:#0e1115;border:1px solid var(--line);border-radius:12px;color:var(--text);font-size:15px}
 .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(12px);background:#fff;color:#111;padding:11px 15px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;transition:.18s;pointer-events:none}.toast.on{opacity:1;transform:translateX(-50%)}
 .note{color:var(--muted);font-size:11px;text-align:center;margin-top:15px}
@@ -45,8 +51,9 @@ h1{font-size:26px;margin:4px 0}.sub{color:var(--muted);font-size:13px;margin-bot
 <div class="card"><div class="label">運動した日</div><div class="value"><span id="activeDays">0</span><span class="unit"> 日</span></div></div>
 <div class="card"><div class="label">連続記録</div><div class="value"><span id="streak">0</span><span class="unit"> 日</span></div></div>
 
-<div class="card wide">
+<div class="card wide calendar-card">
 <div class="monthrow"><button id="prev">‹</button><div class="month" id="monthLabel"></div><button id="next">›</button></div>
+<div class="legend"><span><i class="ls"></i>筋トレ</span><span><i class="lw"></i>ウォーキング</span></div>
 <div class="dow"><div>日</div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div></div>
 <div id="calendar" class="cal"></div>
 </div>
@@ -117,8 +124,9 @@ function render(){
  const c=$('calendar');c.innerHTML='';const y=viewing.getFullYear(),m=viewing.getMonth(),first=new Date(y,m,1),last=new Date(y,m+1,0);
  for(let i=0;i<first.getDay();i++){const e=document.createElement('div');e.className='day empty';c.appendChild(e)}
  const tk=dkey(new Date());
- for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{};const e=document.createElement('div');e.className='day'+(k===tk?' today':'');
-   e.innerHTML=`${d}<div class="dots">${r.strength?'<span class="dot s"></span>':''}${r.walk?'<span class="dot w"></span>':''}</div>`;c.appendChild(e)}
+ for(let d=1;d<=last.getDate();d++){const dt=new Date(y,m,d),k=dkey(dt),r=data[k]||{};const strength=(r.strength||0)>0,walk=(r.walk||0)>0;const e=document.createElement('div');
+   e.className='day'+(strength?' has-strength':'')+(walk?' has-walk':'')+(k===tk?' today':'');
+   e.innerHTML=`<span class="day-number">${d}</span>`;c.appendChild(e)}
 }
 render();
 if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
